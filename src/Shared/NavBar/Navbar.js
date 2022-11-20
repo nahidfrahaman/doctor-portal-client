@@ -1,0 +1,62 @@
+import { useContext } from "react";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../AuthContext/AuthProvider";
+
+const Navbar = () => {
+   
+  const {user,logOut,setUser}= useContext(AuthContext)
+ 
+    const handleLogOut=()=>{
+      
+       logOut()
+       .then(()=>{
+       toast.success('user logOUt sucessfuly')
+       setUser(null)
+       })
+       .catch(error=>{
+        toast.error(error.message)
+       })
+       
+    }
+
+    const nabarItem=
+    <>
+    <li className="ml-2"><Link to="/home">Home</Link></li>
+    <li className="ml-2"><Link to="/appointment">Appoitment</Link></li>
+    <li className="ml-2"><Link to="/">About</Link></li>
+    <li className="ml-2"><Link to="/dashboard">Dashboard</Link></li>
+    <li className="ml-2"><Link to="/">Contact us</Link></li>
+    {
+      user?.uid ? <li className="ml-2"><button onClick={handleLogOut}>LogOut</button></li>: <li className="ml-2"><Link to="/login">logIN</Link></li>
+    }
+    </>
+
+    return (
+        <div className="navbar bg-base-100">
+        <div className="navbar-start">
+          <div className="dropdown">
+            <label tabIndex={0} className="btn btn-ghost lg:hidden">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+            </label>
+            <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+            {
+                nabarItem
+            }
+            </ul>
+          </div>
+          <Link to='/' className="btn btn-ghost normal-case text-xl">Doctor portal</Link>
+        </div>
+        <div className="navbar-center hidden lg:flex ">
+          <ul className="menu menu-horizontal px-2 ml-2 mr-20">
+           {
+            nabarItem  
+           }
+          </ul>
+        </div>
+       
+      </div>
+    );
+};
+
+export default Navbar;
